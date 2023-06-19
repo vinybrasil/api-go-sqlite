@@ -24,19 +24,22 @@ func readAll(c *gin.Context) {
 
 	var products []Product
 
-	for rows.Next() {
-		var product Product
-		err = rows.Scan(&product.product_name, &product.price)
-		checkErr(err)
-		products = append(products, product)
-	}
+	// for rows.Next() {
+	// 	var product Product
+	// 	err = rows.Scan(&product.product_name, &product.price)
+	// 	checkErr(err)
+	// 	products = append(products, product)
+	// }
 
 	fmt.Println(products)
-	c.JSON(http.StatusOK, products)
 
-	if err != nil {
-		return
-	}
+	product := Product{product_name: "burrito", price: 12.2}
+	fmt.Println(product)
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": http.StatusOK,
+		"payload": product,
+	})
 }
 
 func readone(c *gin.Context) {

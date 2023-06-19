@@ -3,8 +3,8 @@ package main
 import "database/sql"
 
 type Product struct {
-	product_name string
-	price        float32
+	product_name string  `json:"product_name"`
+	price        float32 `json:"price"`
 }
 
 func checkErr(err error) {
