@@ -24,22 +24,19 @@ func readAll(c *gin.Context) {
 
 	var products []Product
 
-	// for rows.Next() {
-	// 	var product Product
-	// 	err = rows.Scan(&product.product_name, &product.price)
-	// 	checkErr(err)
-	// 	products = append(products, product)
-	// }
+	for rows.Next() {
+		var product Product
+		err = rows.Scan(&product.ProductName, &product.Price)
+		checkErr(err)
+		products = append(products, product)
+	}
 
 	fmt.Println(products)
 
-	product := Product{product_name: "burrito", price: 12.2}
-	fmt.Println(product)
+	//product := Product{product_name: "burrito", price: 12.2}
+	//fmt.Println(product)
 
-	c.JSON(http.StatusOK, gin.H{
-		"message": http.StatusOK,
-		"payload": product,
-	})
+	c.JSON(http.StatusOK, products)
 }
 
 func readone(c *gin.Context) {
@@ -57,7 +54,7 @@ func readone(c *gin.Context) {
 
 	for rows.Next() {
 		var product Product
-		err = rows.Scan(&product.product_name, &product.price)
+		err = rows.Scan(&product.ProductName, &product.Price)
 		checkErr(err)
 		products = append(products, product)
 	}
@@ -78,14 +75,15 @@ func insertone(c *gin.Context) {
 		return
 	}
 
-	stmt2, err := tx.Prepare("insert into products(product_name, price) values(?, ?)")
+	stmt2, err := tx.Prepare("insert into products(product_name, price) values(?, ?);")
 	checkErr(err)
 
 	defer stmt2.Close()
-	_, err = stmt2.Exec(product.product_name, product.price)
+	_, err = stmt2.Exec(product.ProductName, product.Price)
 	checkErr(err)
 
-	c.JSON(http.StatusOK, product)
+	//c.JSON(http.StatusOK, product)
+	c.IndentedJSON(http.StatusCreated, product)
 }
 
 func updateone(c *gin.Context) {
@@ -105,7 +103,7 @@ func updateone(c *gin.Context) {
 	checkErr(err)
 
 	defer stmt2.Close()
-	_, err = stmt2.Exec(product.product_name, product.price)
+	_, err = stmt2.Exec(product.ProductName, product.Price)
 	checkErr(err)
 
 	c.JSON(http.StatusOK, product)
@@ -128,7 +126,7 @@ func deleteone(c *gin.Context) {
 	checkErr(err)
 
 	defer stmt2.Close()
-	_, err = stmt2.Exec(product.product_name, product.price)
+	_, err = stmt2.Exec(product.ProductName, product.Price)
 	checkErr(err)
 
 	c.JSON(http.StatusOK, product)
