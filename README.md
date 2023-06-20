@@ -6,3 +6,6 @@ We'll also use a single file database to our project, namely SQLite.
 
 
 go mod init api-go-sqlite
+
+
+https://earthly.dev/blog/golang-sqlite/
